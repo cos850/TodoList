@@ -1,0 +1,42 @@
+// Gradle : build 자동화 툴 (컴파일, 라이브러리다운, 로드, 패키징, 테스팅 등 자동화)
+
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '3.1.2'
+	id 'io.spring.dependency-management' version '1.1.2'
+}
+
+group = 'com.example'
+version = '0.0.1-SNAPSHOT'
+
+java {
+	sourceCompatibility = '17'
+}
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor	// 롬복이 코드 생성 시 사용
+	}
+}
+
+// 그래들이 라이브러리를 다운로드 받는 곳 (https://mvnrepository.com)
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	compileOnly 'org.projectlombok:lombok'
+	runtimeOnly 'com.h2database:h2'				// In-Memory DataBase (로컬환경에서 메모리상에 데이터베이스를 구축해줌)
+	annotationProcessor 'org.projectlombok:lombok'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+	// https://mvnrepository.com/artifact/com.google.guava/guava
+	implementation group: 'com.google.guava', name: 'guava', version: '32.1.1-jre'
+
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
